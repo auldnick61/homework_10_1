@@ -12,13 +12,6 @@ entries = [
 def filter_by_state(entries, state='EXECUTED'):
     """
     Фильтрует список словарей по заданному состоянию (state).
-    Параметры:
-        entries (list): Список словарей для фильтрации.
-        state (str): Состояние, по которому следует произвести фильтрацию.
-                     Значение по умолчанию - 'EXECUTED'.
-    Возвращает:
-        list: Новый список, содержащий только те словари, у которых ключ state
-              содержит указанное значение.
     """
 
     filtered_entries = [entry for entry in entries if entry.get('state') == state]
@@ -39,16 +32,8 @@ filtered_by_canceled = filter_by_state(entries, 'CANCELED')
 def sort_by_date(entries, order='descending'):
     """
     Сортирует список словарей по дате (ключ 'date').
-
-    Аргументы:
-        entries (list): Список словарей для сортировки.
-        order (str): Порядок сортировки ('ascending' для возрастания,
-                     'descending' для убывания). Значение по умолчанию - 'descending'.
-
-    Возвращает:
-        list: Новый отсортированный список словарей.
     """
-    # Преобразование строки даты в объект datetime для сортировки
+
     for entry in entries:
         entry['date'] = datetime.strptime(entry['date'], '%Y-%m-%dT%H:%M:%S.%f')
 
@@ -62,17 +47,15 @@ def sort_by_date(entries, order='descending'):
     return sorted_entries
 
 
-# # Пример использования функции
-# entries = [
-#     {'id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:29.512364'},
-#     {'id': 939719570, 'state': 'EXECUTED', 'date': '2018-06-30T02:08:58.425572'},
-#     {'id': 594226727, 'state': 'CANCELED', 'date': '2018-09-12T21:27:25.241689'},
-#     {'id': 615064591, 'state': 'CANCELED', 'date': '2018-10-14T08:21:33.419441'}
-# ]
+entries = [
+    {'id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:29.512364'},
+    {'id': 939719570, 'state': 'EXECUTED', 'date': '2018-06-30T02:08:58.425572'},
+    {'id': 594226727, 'state': 'CANCELED', 'date': '2018-09-12T21:27:25.241689'},
+    {'id': 615064591, 'state': 'CANCELED', 'date': '2018-10-14T08:21:33.419441'}
+]
 
-sorted_entries_desc = sort_by_date(entries)  # Сортировка по убыванию
-sorted_entries_asc = sort_by_date(entries, 'ascending')  # Сортировка по возрастанию
-
+sorted_entries_desc = sort_by_date(entries)
+sorted_entries_asc = sort_by_date(entries, 'ascending')
 
 if __name__ == "__main__":
     print('Выход функции со статусом по умолчанию EXECUTED:')
