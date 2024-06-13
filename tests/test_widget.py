@@ -1,32 +1,35 @@
-import unittest
+import pytest
 from src.widget import mask_account_info, format_date
+from typing import List, Tuple
 
 
-class TestWidget(unittest.TestCase):
-    def test_mask_account_info_account_valid(self) -> None:
-        """Проверка маскировки валидного номера счета."""
-        info = "Счет 73654108430135874302"
-        expected = "Счет ****74302"
-        self.assertEqual(mask_account_info(info), expected)
-
-    def test_mask_account_info_card_valid(self) -> None:
-        """Проверка маскировки валидного номера карты."""
-        info = "Visa Platinum 8990922113665229"
-        expected = "Visa Platinum 8990 92** **** 5229"
-        self.assertEqual(mask_account_info(info), expected)
-
-    def test_mask_account_info_invalid(self) -> None:
-        """Проверка возвращения ошибки при неверном формате номера."""
-        info = "Wrong Info 123456"
-        expected = "Неверный формат номера карты"
-        self.assertEqual(mask_account_info(info), expected)
-
-    def test_format_date_valid(self) -> None:
-        """Проверка корректного приведения строки с датой к формату ДД.ММ.ГГГГ."""
-        date_string = "2018-07-11T02:26:18.671407"
-        expected = "11.07.2018"
-        self.assertEqual(format_date(date_string), expected)
+@pytest.fixture
+def account_info() -> List[Tuple[str, str]]:
+    return [
+        ("Счет 73654108430135874302", "Счет ****74302"),
+        ("Visa Platinum 8990922113665229", "Visa Platinum 8990 92** **** 5229"),
+        ("Wrong Info 123456", "Неверный формат номера карты")
+    ]
 
 
-if __name__ == "__main__":
-    unittest.main()
+@pytest.fixture
+def date_info() -> List[Tuple[str, str]]:
+    return [
+        ("2018-07-11T02:26:18.671407", "11.07.2018")
+    ]
+
+
+@pytest.mark.parametrize("input_value,expected", [
+    ("Счет 73654108430135874302", "Счет ****74302"),
+    ("Visa Platinum 8990922113665229", "Visa Platinum 8990 92** **** 5229"),
+    ("Wrong Info 123456", "Неверный формат номера карты")
+])
+def test_mask_account_info(input_value: str, expected: str) -> None:
+    assert mask_account_info(input_value) == expected
+
+
+@pytest.mark.parametrize("input_value, expected", [
+    ("2018-07-11T02:26:18.671407", "11.07.2018")
+])
+def test_format_date(input_value: str, expected: str) -> None:
+    assert format_date(input_value) == expected
