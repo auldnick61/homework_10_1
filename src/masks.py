@@ -20,7 +20,7 @@ def mask_account_number(account_number: Union[int, str]) -> str:
     account_number_str = str(account_number)
     if len(account_number_str) != 20:
         return "Неверный формат номера счета"
-    return "****" + account_number_str[-4:]
+    return "****" + account_number_str[-5:]
 
 
 if __name__ == "__main__":
